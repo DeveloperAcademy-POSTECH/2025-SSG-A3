@@ -6,6 +6,10 @@ on:
       - edited
       - labeled
       - unlabeled
+      
+permissions:
+  pull-requests: write
+
 jobs:
   assign-reviewer:
     runs-on: ubuntu-latest
