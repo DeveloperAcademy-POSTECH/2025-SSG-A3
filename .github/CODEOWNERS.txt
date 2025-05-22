@@ -1,0 +1,2 @@
+# 모든 파일에 대해 팀 전체가 리뷰어로 지정됩니다
+* @alstjr7437 @devPaidion @wjdalswl @jHoon99 @GthingkingG @seungchan2022
