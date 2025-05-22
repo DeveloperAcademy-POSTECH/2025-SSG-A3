@@ -18,7 +18,7 @@ class SwiftClass {
 	static var mutableTypeProperty: Int = 42
 	static let immutableTypeProperty: Int = 42
 	
-	class var overriableComputedTypeProperty: Int {
+	class var classComputedTypeProperty: Int { // overridable type property
 		return 42 * 42
 	}
 	
@@ -30,10 +30,28 @@ class SwiftClass {
 		print("typeMethod")
 	}
 	
-	class func overriableTypeMethod() {
+	class func classTypeMethod() { // overridable type method
 		print("class keyword makes type function overridable")
 	}
 }
+```
+
+### `Final`키워드
+> `Final` 키워드를 사용된 클래스는 상속할 수 없습니다.
+
+```swift
+final class FinalClass: SwiftClass {
+	var newStoredProperty: Int = 12
+	
+	override static func classTypeMethod() {
+		print("This function can no longer be overridden.")
+	}
+}
+
+/***
+ 🚫Error: Inheritance from a final class 'FinalClass'
+ class LastClass: FinalClass { ... }
+***/
 ```
 
 
@@ -60,11 +78,10 @@ struct ValueType {
 	var property: Int = 0 
 } 
 
-let structOne = ValueType()
-let structTwo = structOne
+var structOne = ValueType()
+var structTwo = structOne
 
-structOne = structTwo
-structOne = 42
+structOne.property = 42
 
 print(structOne.property) // prints 42
 print(structTwo.property) // prints 0
@@ -73,18 +90,16 @@ print(structTwo.property) // prints 0
 
 ##### 참조 타입 `Reference Type`
 - 참조 타입은 데이터를 전달할 때, 메모리 주소를 전달한다.
-- `Struct`,`Int` , `String`, `Tuple`, `Enum`, `Collection`
 
 ```swift
 class ReferenceType { 
 	var property: Int = 0 
 } 
 
-let classOne = ReferenceType()
-let classTwo = classOne // classOne and classTwo point same memory address
+var classOne = ReferenceType()
+var classTwo = classOne // classOne and classTwo point same memory address
 
-classOne = classTwo
-classTwo = 42
+classTwo.property = 42
 
 print(classOne.property) // prints 42
 print(classTwo.property) // prints 42
@@ -103,3 +118,6 @@ print(classTwo.property) // prints 42
 
 
 
+### Reference
+- [Choosing Between Structures and Classes](https://developer.apple.com/documentation/swift/choosing-between-structures-and-classes)
+- [Swift - 구조체(Struct)와 클래스(Class) 완전 정복하기: 기본 개념부터 프로퍼티, 인스턴스, 상속까지](https://mini-min-dev.tistory.com/117)
