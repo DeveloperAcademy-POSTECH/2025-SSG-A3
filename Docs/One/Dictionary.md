@@ -70,7 +70,7 @@ dict1.filter(condition)
 ```
 - **Dictionary + 반복문**
 	- for문 사용
-			- 루프상수가 튜플일 때
+		- 루프상수가 튜플일 때
 		- 루프상수가 변수일 때
 	- forEach문 사용
 		- `for - in` 과 똑같으나 클로저로 넘겨준다.
@@ -84,7 +84,7 @@ for (key, value) in dict1 {
 } //튜플방식
 
 for element in dict1 {
-	print("\(element.key) : \(element.key)")
+	print("\(element.key) : \(element.value)")
 } //변수방식
 
 dict1.forEach {
