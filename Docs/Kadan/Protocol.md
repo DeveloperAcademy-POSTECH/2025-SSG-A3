@@ -77,10 +77,27 @@ class AcademyBand: Band {
 ```
 
 - 이렇게 선언 해주면 채택해주는 곳에서 꼭 선언해 주지 않아도 에러가 나지 않는다.
+```swift
+struct AcademyBand: Band {   // error!
+	var drum: String = "A"
+	var vocal: String = "B"
+	var piano: String = "C"
+	var guitar: String = "D"
+}
+```
 
-![[Pasted image 20250526232040.png]]
 - @objc 를 붙이고 struct 에 채택하면 오류가 난다. → @objc 란 Objectiv-C에서도 사용될 수 있단 건데, Objective-C에서 프로토콜은 오직 “클래스” 에서만 채택가능하고
-![[Pasted image 20250526232023.png]]
+
+```swift
+@objc protocol Band: AnyObject {
+	var drum: String   { get set }
+	var vocal: String  { get set }
+	var piano: String  { get set }
+	var guitar: String { get set }
+	@objc optional var bass: String { get set }
+}
+
+```
 
 
 → 클래스 전용일 때 사용하는 AnyObject가 자동으로 채택되기 때문에 클래스만 가능하다.
