@@ -84,3 +84,108 @@ class AcademyBand: Band {
 
 
 → 클래스 전용일 때 사용하는 AnyObject가 자동으로 채택되기 때문에 클래스만 가능하다.
+
+---
+
+### 프로토콜 안에 선언된 프로퍼티를 구현할 때, 저장 연산 둘다 된다.
+
+```swift
+protocol Band {
+	var drum: String   { get set }
+}
+
+class RunnerBand: Band {
+	var drum: String = "Kadan" // 저장 프로퍼티 구현
+}
+
+class MentorBand: Band {
+	var drum: String = "Sup" // 연산 프로퍼티 구현
+}
+```
+
+- 그리고 프로토콜에 선언되는 프로퍼티는 항상 `var` 로 선언 되어야 한다. (let 은 에러) → 저장/연산 상관없이 구현 가능한데, 연산 프로퍼티는 반드시 `var` 로 선언해야 하기 때문 → 대신 채택해서 구현하는 곳에서는 상황에 따라 다르다.
+
+---
+
+### { get }
+
+```swift
+protocol Band {
+	var drum: String { get }
+}
+
+class RunnerBand: Band {
+	let drum: String = "Kadan" 
+}
+
+class MentorBand: Band {
+	var drum: String = "Sup" 
+}
+```
+
+- 저장 프로퍼티로 구현할 경우 let, var 둘다 상관 없음.
+
+```swift
+class RunnerBand: Band {
+	var drum: String {
+		get {
+			return "Kadan"
+		}
+	}
+}
+
+class MentorBand: Band {
+	var random: String: ""
+	var drum: String {
+		get {
+			return "Sup"
+		}
+		set {
+			self.random = newValue
+		}
+	}
+}
+```
+
+- 연산 프로퍼티로 구현할 경우 get-only 도 가능하고 getter setter 모두 만들어서 둘 다 사용 가능
+
+---
+
+### { get set }
+
+```swift
+protocol Band {
+	var drum: String { get set }
+}
+
+class RunnerBand: Band {
+	let drum: String = "Kadan"  // error! Type 'RunnerBand' does not conform to protocol 'Band'
+}
+
+class MentorBand: Band {
+	var drum: String = "Sup" 
+}
+```
+
+- { get set } 으로 선언 될 경우, 저장 프로퍼티는 무조건 var 로 선언
+- { get } 때와 다르게, 연산 프로퍼티는 getter setter 모두 제공하는 것이 필수
+
+---
+
+### 프로토콜은 1급 객체이다
+
+```swift
+protocol Band {
+	var piano: String { get }
+}
+
+struct RunnerBand: Band {
+	var piano: String = "Kadan" // 프로토콜에 선언된 필수 프로퍼티
+	var bandName: String = "One" // 내부에서 사용하고 싶은 별도 프로퍼티
+}
+
+let one: Band = RunnerBand.init()
+```
+
+- 1급 객체 특징에 의해 Band라는 타입으로 프로토콜을 선언하고, `RunnerBand`의 인스턴스를 프로토콜 타입을 가진 변수에 대입 가능. → `RunnerBand`라는 구조체 인스턴스를 프로토콜 타입으로 “타입 캐스팅” 하기 때문에 가능하다.
+- 대신 타입 자체가 Band라는 프로토콜을 따르기 떄문에 `bandName`은 접근 불가능
