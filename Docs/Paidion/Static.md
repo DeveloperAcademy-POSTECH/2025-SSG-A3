@@ -64,7 +64,7 @@ print(Square.instanceNumber) // prints 2
 
 
 class SuperClass {
-	class var computedTypeProperty: Int {
+	class computedTypeProperty: Int {
 		return 42
 	}
 	
@@ -75,7 +75,7 @@ class SuperClass {
 
 
 class SubClass: SuperClass {
-	override static var computedTypeProperty: Int {
+	override static var overrideableComputedTypeProperty: Int {
 		return 0
 	}
 	
