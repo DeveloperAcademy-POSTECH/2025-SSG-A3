@@ -17,6 +17,11 @@ ex) 밴드가 있다.
 → 실제 기타는 누가치고 드럼은 누가치고, 연주는 어떤 걸 하는지 실제로 지정 해 주는 것이 아니라, 이런 프로퍼티는 꼭 필요해요! (이게 없으면 밴드는 안돌아가요) , 이런 메서드는 꼭 필요해요! (밴드는 모여서 연주가 제일 중요함) 라고 꼭 필요한 요구사항을 선언 해두는 것이 `Protocol` 이다.
 
 ---
+### Protocol 특징
+1. 구현 강제: 프로토콜은 정의된 메서드와 속성을 반드시 구현하도록 강제한다.
+   -> 프로토콜을 준수하는 타입이 일정한 기능을 갖추도록 보장할 수 있다.
+2. 타입 간의 일관성 유지: 프로토콜을 통해 서로 다른 타입에 공통된 기능 부여 가능.
+3. 다형성: 프로토콜을 활용해 특정 타입이 아닌 프로토콜 기반으로 다형성을 구현할 수 있어 코드의 유연성이 높아진다.
 
 
 ### Protocol 선언
@@ -43,19 +48,31 @@ protocol Band {
 ### Protocol 채택
 
 ```swift
-class AcademyBand: Band {
+class AcademyRunnerBand: Band {
 	var drum:   String = "A"
 	var vocal:  String = "B"
 	var piano:  String = "C"
 	var guitar: String = "D"
 	
 	func play() {
-		print("day6 한 페이지가 될 수 있게")
+		print("day6: 한 페이지가 될 수 있게")
+	}
+}
+
+class AcademyMentorBand: Band {
+	var drum:   String = "A"
+	var vocal:  String = "B"
+	var piano:  String = "C"
+	var guitar: String = "D"
+	
+	func play() {
+		print("day6: Happy")
 	}
 }
 ```
 
 - 이런 식으로 프로토콜에서는 필수적인 요구사항의 껍데기만 제공하고, 실제 구현은 채택한 곳에서!!
+- 같은 프로토콜을 채택함으로써 두 구조체가 동일한 인터페이스를 가지며, 일관된 방식으로 사용가능
 
 ---
 
@@ -206,3 +223,5 @@ let one: Band = RunnerBand.init()
 
 - 1급 객체 특징에 의해 Band라는 타입으로 프로토콜을 선언하고, `RunnerBand`의 인스턴스를 프로토콜 타입을 가진 변수에 대입 가능. → `RunnerBand`라는 구조체 인스턴스를 프로토콜 타입으로 “타입 캐스팅” 하기 때문에 가능하다.
 - 대신 타입 자체가 Band라는 프로토콜을 따르기 떄문에 `bandName`은 접근 불가능
+
+-> 프로토콜을 준수하는 타입은 요구사항을 정확히 구현해야 하며, 이를 통해 특정 기능을 갖추도록 보장할 수 있고, 요구사항을 통해 타입 간 일관성과 호환성을 유지할 수 있어 코드의 안정성과 유연성을 높일 수 있다.
