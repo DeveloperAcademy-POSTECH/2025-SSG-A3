@@ -55,7 +55,7 @@ print(name) // "John hello"
 - [@EnvironmentObject](https://developer.apple.com/documentation/swiftui/environmentobject): 앱 전역에서 공유되는 **공통 상태를 참조** (ex. 사용자 설정, 로그인 정보 등)
 
 
-- @ObservableObject: ObservableObject 내부에서 **변경 사항을 자동으로 알리는 속성**에 사용
+- ObservableObject: ObservableObject 내부에서 **변경 사항을 자동으로 알리는 속성**에 사용
 - @Published: 여러 뷰에서 구독할 수 있는 **상태 객체를 선언**할 때 사용 (뷰는 이 객체를 @ObservedObject 등으로 구독)
 
 ## Keywords
@@ -65,8 +65,8 @@ print(name) // "John hello"
 + [[@ObservedObject]]
 + [[@EnvironmentObject]]
 
-+ [[@ObservableObject]]
-+ [[@Published]]
++ ObservableObject
++ @Published
 
 ## References
 - 참고한 레퍼런스를 작성 (예 : Apple의 공식 문서)

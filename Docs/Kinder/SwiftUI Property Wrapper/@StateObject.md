@@ -3,6 +3,7 @@
 >GQ2. 주의해야할 점은 무엇이 있을까?
 
 ## Description
+![[Pasted image 20250623234718.png]]
 > ObservableObject, @Observable을 채택한 객체에 사용
 > State의 객체(Object) 버전
 
@@ -18,7 +19,8 @@ SwiftUI는 fresh render를 할때 처음 생성된 `@StateObject property`를 �
 - @StateObject는 `한번만 초기화 되고 reuse`되기 때문에 @StateObject로 마크된 `instance`나 `property`는 `새로 얻을 수 없음`
 - 또한 `refresh render` 되더라도 **처음 할당된 instance로 유지!**
 
-> 결론: View가 재생성되도 @StateObject는 한번만 생성되서 계속 재사용 됨
+### 결론
+> View가 재생성되도 @StateObject는 한번만 생성되서 계속 재사용 됨
 
 ## 코드 예시
 ```swift

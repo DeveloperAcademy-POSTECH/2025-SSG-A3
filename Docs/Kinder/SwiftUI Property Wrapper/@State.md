@@ -3,6 +3,7 @@
 >GQ2. State를 쓸때 어떤 부분을 조심해야할까?
 
 ## Description
+![[Pasted image 20250623234647.png]]
 
 > SwiftUI 단일 View에서 사용할 데이터
 > 선언 후 데이터가 변경시 View가 refresh render됨

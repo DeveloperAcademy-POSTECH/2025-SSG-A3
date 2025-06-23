@@ -3,6 +3,7 @@
 >GQ2. 주의해야할 점은 무엇이 잇을까?
 
 ## Description
+![[Pasted image 20250623234701.png]]
 > 다른 View로 부터 property를 받을 때 사용 됨
 > 이 데이터도 변경시 View가 Refresh render
 
