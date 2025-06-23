@@ -13,7 +13,7 @@ struct Trimmed {
     private var value: String = ""
     
     var wrappedValue: String {
-        get { value }
+        get { value = "\(value) hello" }
         set { value = newValue.trimmingCharacters(in: .whitespaces) }
     }
     
@@ -22,10 +22,18 @@ struct Trimmed {
     }
 }
 
+@propertyWrapper
+struct lowerTen {
+    var wrappedValue: String {
+        get { value = "\(value) hello" }
+        set { value = min(value, 10) }
+    }
+}
+
 // ----- 결과 -----
 @Trimmed var name: String = "  John  "
 
-print(name) // "John"
+print(name) // "John hello"
 ```
 
 위와 같이 get을 할때는 value 자체를 보내줌
