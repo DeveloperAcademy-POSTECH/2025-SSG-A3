@@ -133,7 +133,9 @@ class RunnerBand: Band {
 }
 
 class MentorBand: Band {
-	var drum: String = "Sup" // 연산 프로퍼티 구현
+	var drum: String { // 연산 프로퍼티 구현
+		return "Sup"
+	} 
 }
 ```
 
