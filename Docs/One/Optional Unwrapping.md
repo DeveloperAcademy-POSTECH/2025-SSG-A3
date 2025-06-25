@@ -1,4 +1,4 @@
-/Optional Unwrapping[옵셔널 언래핑] : 옵셔널의 값을 추출
+Optional Unwrapping[옵셔널 언래핑] : 옵셔널의 값을 추출
 옵셔널 타입의 값을 출력하면, `Optional("")`와 같이 옵셔널로 래핑(wrapping)되어 있다. 
 *어떻게 옵셔널의 값을 추출할까?*
 

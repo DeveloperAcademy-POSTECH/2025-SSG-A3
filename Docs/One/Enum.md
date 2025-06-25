@@ -51,7 +51,7 @@ enum LightSwitch {
 - [열거형의 Iterator]
 	- Swift에서 열거형은 반복가능한 타입이 아니어서, 반복 구문을 사용하여 각 케이스를 순회할 수 없다.
 	- -> `CaseIterable`프로토콜을 채택하여, 열거형의 모든 케이스를 반복 가능하게 만들 수 있다.
-	- => `CaseIterable`프로토콜로인해, 자동으로 생성된 배열 `allCases`를 사용하여 각케이스를 순회할 수 있습니다.
+		- => `CaseIterable`프로토콜로인해, 자동으로 생성된 배열 `allCases`를 사용하여 각케이스를 순회할 수 있습니다.
 ``` swift
 enum Beverage: CaseIterable {
 	case coffee
