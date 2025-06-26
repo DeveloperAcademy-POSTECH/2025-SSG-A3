@@ -26,8 +26,6 @@
 - 정확히는 타입 메서드(Type Method)이다.
 - `let config = URLSessionConfiguration.background(withIdentifier: "com.example.bg")
 
-**let** session = URLSession(configuration: config)`
-
 | 종류           | 설명                         | 캐시/쿠키 | 사용 예시         |
 | ------------ | -------------------------- | ----- | ------------- |
 | `shared`     | 시스템이 제공하는 전역 세션            | 있음    | 아주 간단한 요청     |
