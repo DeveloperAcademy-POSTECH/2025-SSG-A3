@@ -36,25 +36,6 @@ class SwiftClass {
 }
 ```
 
-### `Final`키워드
-> `Final` 키워드를 사용된 클래스는 상속할 수 없습니다.
-
-```swift
-final class FinalClass: SwiftClass {
-	var newStoredProperty: Int = 12
-	
-	override static func classTypeMethod() {
-		print("This function can no longer be overridden.")
-	}
-}
-
-/***
- 🚫Error: Inheritance from a final class 'FinalClass'
- class LastClass: FinalClass { ... }
-***/
-```
-
-
 
 ### `class` vs. `struct`
 
