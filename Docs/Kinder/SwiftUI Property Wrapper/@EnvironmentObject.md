@@ -76,77 +76,106 @@ struct SubView: View {
 ![[Pasted image 20250624001143.png]]
 ![[Pasted image 20250624001201.png]]
 
-### 코드로 보는 예시
+### 코드로 보는 예시(EnvironmentObject)
+
 ```swift
-class DataProvider: ObservableObject {
-    @Published var count: Int = 0
+class UserSettings: ObservableObject {
+    @Published var name: String = "Kim"
+}
+
+struct RootView: View {
+    @StateObject private var settings = UserSettings()
     
-    func increase() {
-        count += 1
+    var body: some View {
+        NavigationStack {
+            VStack {
+                Text("RootView: \(settings.name)")
+                
+                NavigationLink("Go to ChildView") {
+                    ChildView()
+                }
+            }
+        }
+        .environmentObject(settings)
     }
 }
 
-struct CountCalculatorView: View {
+struct ChildView: View {
+    var body: some View {
+        VStack {
+            Text("ChildView")
+            SubChildView()
+        }
+    }
+}
 
-    @StateObject private var provider: DataProvider = .init()
+struct SubChildView: View {
+    @EnvironmentObject var settings: UserSettings
     
     var body: some View {
         VStack {
+            Text("SubChildView: \(settings.name)")
+            Button("Change name") {
+                settings.name = "Lee"
+            }
+        }
+    }
+}
+```
+### 코드 설명
+- 제일 상위 View인 RootView위인 NavigationStack에서 setting를 주입
+- 해당 주입을 하면 하위 View 생성 시 Child, SubChild를 만들때 init으로 주입 X
+- 해당 데이터들이 View들 간에 의존성이 주입되서 데이터를 동기화 가능
 
-            EnvironmentObjectView()
-                .environmentObject(provider)
-                
-            BindingView(provider: provider)
-            
-            Button {
-                provider.increase()
-            } label: {
-                Text("+")
+
+### 코드로 보는 예시(ObjectBinding)
+```swift
+struct ObservedRootView: View {
+    @StateObject private var settings = UserSettings()
+
+    var body: some View {
+        NavigationStack {
+            VStack {
+                Text("RootView: \(settings.name)")
+                NavigationLink("Go to ChildView") {
+                    ObserveChildView(settings: settings) // 직접 주입해야 함
+                }
             }
         }
     }
 }
 
-struct EnvironmentObjectView: View {
-    @EnvironmentObject var provider: DataProvider
+struct ObserveChildView: View {
+    @ObservedObject var settings: UserSettings
     
     var body: some View {
-        Text("ContentView: \(provider.count)")
-        SubView()
-    }
-
-}
-
-// 위 ObjectView에서 provider를 사용해서 따로 다시 의존할 필요X
-struct SubView: View {
-    
-    @EnvironmentObject var provider: DataProvider
-    
-    var body: some View {
-        Text("ContentView: \(provider.count)")
+        ObserveSubChildView(settings: settings) // 또 주입해야 함
     }
 }
 
-struct BindingView: View {
-    @ObservedObject var provider: DataProvider
-
+struct ObserveSubChildView: View {
+    @ObservedObject var settings: UserSettings
+    
     var body: some View {
-        Text("BindingView: \(provider.count)")
-        Button("Increase in BindingView") {
-            provider.increase()
+        VStack {
+            Text("SubChildView: \(settings.name)")
+            Button("Change name") {
+                settings.name = "Lee"
+            }
         }
     }
- }
+}
 ```
 ### 코드 설명
-BindingView는 @ObservedObject를 사용해 DataProvider를 전달받고 있음
-- 때문에 CountCalculatorView에서 BindingView를 초기화할 때에는 생성자 매개변수를 통해 provider를 **직접 전달**해주고 있음
-- @ObservedObject는 상위 뷰에서 생성된 ObservableObject를 **주입받아 감시**하는 방식이기 때문에, 뷰가 리렌더링될 경우에도 해당 인스턴스를 계속 사용 가능함
-    
-- 반면 SubView처럼 @EnvironmentObject를 사용하는 경우에는 **환경에 등록된 객체를 자동 주입**받지만, @ObservedObject는 반드시 **초기화 시점에 외부에서 전달받아야 함**
-- 또한 @ObservedObject는 해당 뷰가 소유하는 객체가 아니기 때문에, **소유 및 생명주기 관리 책임은 상위 뷰에 있음**
-    
-- @ObservedObject와 @EnvironmentObject 모두 데이터 변경 시 뷰를 자동으로 갱신하지만, **주입 방식과 초기화 방식**에 차이가 있음
+- EnvironmentObject와 다르게 Observed는 init시 주입해줘야함
+- SubChild로 주입해줄때도 한번더 주입 해줘야함
+
+
+### 요약
+- ObservedObject: 생성자 주입(init)으로 의존성을 정의
+	- 하위 View들에 다시 생성자 주입을 통해서 주입해줘야함
+- EnvironmentObject: 제일 상위에서 의존성을 주입해서 사용
+	- 하위 View들도 Environment는 자동으로 데이터가 받아짐
 
 
 ## Keywords
