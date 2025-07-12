@@ -70,11 +70,11 @@ extension Stack {
 ```
 
 
-## 제너릭 타입 제약
+## 제너릭 타입과 제약조건
 
 ### 기본 문법
 
-- 타입 파라미터의 이름 뒤에 콜론으로 구분한 단일 클래스 또는 프로토콜 제약을 위치하여 타입 제약을 작성한다.
+- 타입 파라미터의 이름 뒤에 콜론으로 구분한 단일 클래스 또는 프로토콜을 위치하여 타입 제약조건을 작성한다.
 
 ```swift
 func someFunction<T: SomeClass, U: SomeProtocol>(someT: T, someU: U) { ... }
@@ -108,6 +108,8 @@ func findIndex<T: Equatble>(of valueToFind: T, in array: [T]) -> Int? {
 
 
 # 연관된 타입 (Associated Type)
+
+## 기본 사용법
 
 - 프로토콜을 정의할 때는 함수와 제너릭 타입을 정의할 때와는 달리 `associatedtype` 키워드를 사용해서 제너릭과 같은 기능 사용할 수 있다.
 - 선언부가 아닌 구현부에서 `associatedtype` 을 정의한다.
@@ -171,3 +173,122 @@ struct Stack<Element>: Container {
     }
 }
 ```
+
+## 연관된 타입과 제약조건
+
+### 연관된 타입에 제약조건 추가하기
+
+- `associatedtype` 에 준수해야하는 프로코톨을 명시하여 연관된 타입에 제약조건을 더할 수 있다.
+
+```swift
+protocol Container { 
+	associatedtype Item: Equatable
+	...
+}
+```
+
+### 제너릭 Where 절
+
+- `where` 절을 이용해 연관된 타입에 대한 요구조건을 정의할 수 있다.
+- 타입 또는 함수의 본문을 여는 중괄호 바로 전에 `where` 키워드를 활용해서 연관된 타입이 특정 프로토콜을 준수하거나 얀관된 타입이 특정 파라미터와 동일해야 한다고 요구할 수 있다.
+
+#### Where 절 사용예시
+
+- `someContainer` 는 `Container` 프로토콜을 준수하는 `C1` 타입이다.
+- `anotherContainer` 는 `Container` 프로토콜을 준수하는 `C2` 타입이다.
+- `someContainer` 와 `anotherContainer` 는 같은 타입의 `Item`을 지닌다.
+- `someContainer` 안에 항목은 서로 다름을 확인하기 위해 비동등 연산자 (`!=`)를 사용할 수 있다.
+
+```swift
+func allItemsMatch<C1: Container, C2: Container>
+    (_ someContainer: C1, _ anotherContainer: C2) -> Bool
+    where C1.Item == C2.Item, C1.Item: Equatable {
+		
+        if someContainer.count != anotherContainer.count {
+            return false
+        }
+		
+        for i in 0..<someContainer.count {
+            if someContainer[i] != anotherContainer[i] {
+                return false
+            }
+        }
+		
+        // All items match, so return true.
+        return true
+}
+```
+
+- 같은 타입의 `Item`을 지닌다면,   `C1` 타입과 `C2` 타입이 다르더라도 `allItemsMatch(_:_:)` 함수를 사용할 수 있다.
+- 아래 예시 코드처럼, `Stack` 과 `Array` 는 다른 타입이지만, 타입의 `Item` 의 타입이 모두 `String` 이기 때문에 `allItemsMatch(_:_:)` 함수를  사용할 수 있다.
+
+```swift
+var stackOfStrings = Stack<String>()
+stackOfStrings.push("uno")
+stackOfStrings.push("dos")
+stackOfStrings.push("tres")
+
+var arrayOfStrings: [String] = ["uno", "dos", "tres"]
+
+if allItemsMatch(stackOfStrings, arrayOfStrings) {
+    print("All items match.")
+} else {
+    print("Not all items match.")
+}
+// Prints "All items match."
+```
+
+#### Where 절을 활용한 제너릭 확장
+
+- 확장 `Extension` 에서도 `where` 절을 활용할 수 있다.
+- 아래 코드에서 `isTop(_:)` 구현은 `==` 연산자를 사용하지만 `Stack` 정의에서 `items` 는 동등성 연산을 요구하지 않기 때문에 `==` 연산자를 사용하면 컴파일 에러가 발생한다.
+- 아래 확장 은 스택에 `items` 이 `Equatable` 프로토콜을 준수할 때만 `isTop(_:)` 메서드를 추가한다.
+
+``` swift
+extension Stack where Element: Equatable {
+    func isTop(_ item: Element) -> Bool {
+        guard let topItem = items.last else {
+            return false
+        }
+        return topItem == item
+    }
+}
+
+struct NotEquatable { } 
+var notEquatableStack = Stack<NotEquatable>() 
+let notEquatableValue = NotEquatable() notEquatableStack.push(notEquatableValue)
+// 에러 발생 -> notEquatableStack 의 items는 Equatable 프로토콜 준수하지 않음
+notEquatableStack.isTop(notEquatableValue)
+```
+
+## 암묵적 제약조건 (Implicit Contraints)
+
+- 많은 경우, 제너릭 코드에서 암묵적으로 `Copyable` 과 같은 매우 일반적으로 사용되는 프로토콜 준수를 요구한다.
+- 아래의 1번 코드는 암시적 제약 조건을 가지고 있고, 2번은 명시적으로 준수성을 표시한 것이다. 
+
+```swift
+function someFunction<MyType> { ... } // 1번
+function someFunction<MyType: Copyable> { ... } // 2번
+```
+
+- 스위프트에서 사용하는 많은 타입이 이러한 프로토콜을 준수하기 때문에, 명시적으로 코드를 작성하는 것은 불필요할 수 있다.
+- 대신에 예외적으로 암묵적 제약조건을 제한하기 위해, `~(tilde)` 를 활용할 수 있다.
+- `~Copyable` 은 복사 가능한 타입과 복사 불가능한 타입 모두 허용한다는 의미이다.
+- `~Copyable` 는 복사 불가능한 타입만 요구한다고 오해하지 않아야 한다.
+
+```swift
+func f<MyType>(x: inout MyType) {
+    let x1 = x  
+    let x2 = x 
+}
+
+func g<AnotherType: ~Copyable>(y: inout AnotherType) {
+    let y1 = y  
+    let y2 = y  // Error: Value consumed more than once.
+}
+```
+
+# Reference
+- [Generics | Swift Docs](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/generics/)
+- [Generics | Swift Korean Docs](https://bbiguduk.gitbook.io/swift/language-guide-1/generics)
+- [Consume noncopyable types in Swift | WWDC24](https://developer.apple.com/videos/play/wwdc2024/10170)
