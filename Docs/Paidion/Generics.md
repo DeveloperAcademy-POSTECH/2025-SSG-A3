@@ -17,14 +17,14 @@ func sumTwoValues(a: Int, b: Int) { return a + b }
 func sumTwoValues(a: Double, b: Double) { return a + b }
 func sumTwoValues(a: String, b: String) { return a + b }
 ```
-## ☝️ 타입 파라미터 지정
+## 타입 파라미터 지정
 
 - 함수 이름 마지막에 `< >` 를 사용해서 타입 파라미터 지정한다.
 - 대문자로 시작한다. `(예시) <A>, <U>, <Element>, <T, U>`
 - 함수 내부에서 파라미터 형식이나 리턴형, 내부 변수 타입으로 사용된다,
 - 어떤 타입이 입력되어야 한다는 것을 제시하는 **플레이스 홀더** 역할한다.
 
-## ✌️ 타입 파라미터 사용
+## 타입 파라미터 사용
 
 - 실제 파라미터 대신 타입 파라미터 사용한다.
 - 스위프트에서 이미 많이 사용되고 있다.
@@ -273,7 +273,7 @@ function someFunction<MyType: Copyable> { ... } // 2번
 
 - 스위프트에서 사용하는 많은 타입이 이러한 프로토콜을 준수하기 때문에, 명시적으로 코드를 작성하는 것은 불필요할 수 있다.
 - 대신에 예외적으로 암묵적 제약조건을 제한하기 위해, `~(tilde)` 를 활용할 수 있다.
-- `~Copyable` 은 복사 가능한 타입과 복사 불가능한 타입 모두 허용한다는 의미이다.
+- `~Copyable` 은 복사 가능한 타입과 복사 불가능한 타입 모두 허용한다는 의미이다. (참고 1)
 - `~Copyable` 는 복사 불가능한 타입만 요구한다고 오해하지 않아야 한다.
 
 ```swift
@@ -287,6 +287,9 @@ func g<AnotherType: ~Copyable>(y: inout AnotherType) {
     let y2 = y  // Error: Value consumed more than once.
 }
 ```
+
+- 참고 1
+<img width="634" alt="Image" src="https://github.com/user-attachments/assets/950a81f6-3cc2-4b8a-8777-d0c92b63fe67" />
 
 # Reference
 - [Generics | Swift Docs](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/generics/)
