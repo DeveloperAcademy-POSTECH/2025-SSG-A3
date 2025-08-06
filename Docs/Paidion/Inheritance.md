@@ -1,5 +1,6 @@
 **Subclass to add or override functionality.**
 ## 하위 클래스 (Subclassing)
+
 > 하위 클래스`Subclass` 가 상위 클래스 `Superclass` 의 특성을 상속한다는 것을 나타내기 위해 
 > 하위 클래스 이름은 상위 클래스 이름 전에 콜론 `:` 으로 구분하여 작성한다. 
 
@@ -54,6 +55,7 @@ class Tandem: Bicycle {
 ```
 
 ## 재정의 (Overriding)
+
 > 하위 클래스에서 재정의 하고 싶은 프로퍼티, 메서드 등을 `override` 키워드를 사용해서 재정의 할 수 있다.
  
 ### 프로퍼티 재정의 
@@ -138,6 +140,7 @@ print(myAutomaticCar.description)
 
 
 ### 재정의 방지
+
 > 재정의를 방지하고 싶다면,`final` 키워드를 사용할 수 있다.  
 > `final var, final func, final class func, final subscript` 모두 가능하다.
 > `final class` 를 사용하면, 해당 클래스는 더 이상 상속할 수 없다. 
